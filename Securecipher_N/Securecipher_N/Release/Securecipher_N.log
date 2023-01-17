@@ -1,0 +1,10 @@
+﻿  dllmain.cpp
+C:\Users\jramosdi\source\repos\securecipher_n\Securecipher_N\dllmain.cpp(277,26): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jramosdi\source\repos\securecipher_n\Securecipher_N\dllmain.cpp(293,26): warning C4018: '<': signed/unsigned mismatch
+     Creating library C:\Users\jramosdi\source\repos\securecipher_n\Release\Securecipher_N.lib and object C:\Users\jramosdi\source\repos\securecipher_n\Release\Securecipher_N.exp
+  Generating code
+  2 of 7 functions (28.6%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Securecipher_N.vcxproj -> C:\Users\jramosdi\source\repos\securecipher_n\Release\Securecipher_N.dll
