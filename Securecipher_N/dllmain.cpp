@@ -59,15 +59,15 @@ byte* get_message(size_t real_pos, struct KeyData* key) {
     pos_array[7] = real_pos & 0xFF;
     int j = 0;
     //pos
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++, j++) {
         message[j] = pos_array[i];
     }
     //frn
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++, j++) {
         message[j] = frn_array[i];
     }
     //key
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++, j++) {
         message[j] = key_array[i];
     }
     return message;
@@ -237,39 +237,39 @@ int init(struct Cipher* cipher_data_param) {
 int cipher(LPVOID out_buf, LPCVOID in_buf, DWORD size, size_t offset, struct KeyData* key) { //offset es la posicion en el fichero, hacerlo bien que es la posicion que tengo que cifrar
     printf("Ciphering (%ws)\n", cipher_data->file_name);
 
-    byte* message = (byte*)malloc(20*sizeof(byte));
+    static byte* message = (byte*)malloc(20 * sizeof(byte));
     size_t buf_pos = 0; //posicion en el bufer, solo valida para escribir en el bufer, para cifrar se usa la posicion real en el fichero
-    for (int real_pos = offset; real_pos < size + offset; real_pos++) {
+    for (size_t real_pos = offset; real_pos < size + offset; real_pos++) {
         message = get_message(real_pos, key);
         //Hago la transformacion lineal y actualizo el message
         message = lineal_transform(message);
         //Confusion
         byte resultado = confusion(message);
-        ((byte*)out_buf)[buf_pos] = (((byte*)in_buf)[buf_pos] + resultado);
+        ((byte*)out_buf)[buf_pos] = (((byte*)in_buf)[buf_pos] + resultado) % 256;
         buf_pos++;
     }
 
-    printf("Buffer ciphered");
-    free(message);
+    printf("Buffer ciphered\n");
+    //free(message);
     return 0;
 }
 
 int decipher(LPVOID out_buf, LPCVOID in_buf, DWORD size, size_t offset, struct KeyData* key) {
     printf("Deciphering (%ws)\n", cipher_data->file_name);
-    byte* message = (byte*)malloc(20 * sizeof(byte));
+    static byte* message = (byte*)malloc(20 * sizeof(byte));
     size_t buf_pos = 0; //posicion en el bufer, solo valida para escribir en el bufer, para cifrar se usa la posicion real en el fichero
-    for (int real_pos = offset; real_pos < size + offset; real_pos++) {
+    for (size_t real_pos = offset; real_pos < size + offset; real_pos++) {
         message = get_message(real_pos, key);
         //Hago la transformacion lineal y actualizo el message
         message = lineal_transform(message);
         //Confusion
         byte resultado = confusion(message);
-        ((byte*)out_buf)[buf_pos] = (((byte*)in_buf)[buf_pos] - resultado);
+        ((byte*)out_buf)[buf_pos] = (((byte*)in_buf)[buf_pos] - resultado) % 256;
         buf_pos++;
     }
 
-    printf("Buffer deciphered");
-    free(message);
+    printf("Buffer deciphered\n");
+    //free(message);
     return 0;
 }
 
